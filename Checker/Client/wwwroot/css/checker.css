@@ -1,0 +1,9 @@
+﻿body {
+}
+
+.cell {
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    border: 1px solid black;
+}
