@@ -1,11 +1,101 @@
-﻿<h3>Checkerboard</h3>
+﻿@using Checker.Client.Data
+
+
+<h3>Checkerboard</h3>
+
+@code {
+    List<Checker> blackCheckers = new List<Checker>();
+    List<Checker> whiteChecker = new List<Checker>();
+    Checker? activeChecker = null;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = (i + 1) % 2; j < 8; j += 2)
+            {
+                blackCheckers.Add(new Checker
+                    {
+                        Color = "black",
+                        Row = i,
+                        Column = j,
+                        Direction = CheckerDirection.Down
+                    });
+            }
+        }
+
+        for (int i = 5; i < 8; i++)
+        {
+            for (int j = (i + 1) % 2; j < 8; j += 2)
+            {
+                whiteChecker.Add(
+                    new Checker
+                        {
+                            Color = "white",
+                            Row = i,
+                            Column = j,
+                            Direction = CheckerDirection.Up
+                        });
+            }
+        }
+
+    }
+
+    List<int> rowsPossible = new List<int>();
+    List<int> columnsPossible = new List<int>();
+    void EvaulateCheckerPosition()
+    {
+        rowsPossible.Clear();
+        columnsPossible.Clear();
+
+        if (activeChecker is not null)
+        {
+            rowsPossible.Add(
+                activeChecker.Row + (activeChecker.Direction == CheckerDirection.Up ? -1 : 1)
+            );
+            columnsPossible.Add(activeChecker.Column + 1);
+            columnsPossible.Add(activeChecker.Column - 1);
+        }
+    }
+
+    void MoveChecker(int row, int column)
+    {
+        if (activeChecker is null)
+            return;
+        bool canMoveHere = rowsPossible.Contains(row) && columnsPossible.Contains(column);
+        if (!canMoveHere)
+            return;
+        activeChecker.Column = column;
+        activeChecker.Row = row;
+        activeChecker = null;
+        EvaulateCheckerPosition();
+    }
+
+}
 
 @for (int i = 0; i < 8; i++)
 {
+    int localI = i;
+
     <div class="row">
         @for (int j = 0; j < 8; j++)
         {
-            <div class="cell"></div>
+            int localJ = j;
+            var checker = blackCheckers.FirstOrDefault(n => n.Column == j && n.Row == i);
+            if (checker is null)
+            {
+                checker = whiteChecker.FirstOrDefault(n => n.Column == j && n.Row == i);
+            }
+            bool canMoveHere = rowsPossible.Contains(i) && columnsPossible.Contains(j);
+            <div @onclick="()=> MoveChecker(localI,localJ)" class="cell @(canMoveHere ? "active" : "")">
+                @if (checker is not null)
+                {
+                    <div @onclick="()=> { activeChecker =checker; EvaulateCheckerPosition();}"
+                        class="checker @checker.Color @(checker == activeChecker ? "active" : "")"></div>
+                }
+            </div>
         }
     </div>
 }
+
