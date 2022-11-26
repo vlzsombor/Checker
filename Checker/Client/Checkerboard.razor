@@ -41,6 +41,7 @@
         }
 
     }
+    bool whiteTurn = true;
 
     List<(int row, int column)> cellsPossible = new();
     void EvaulateCheckerPosition()
@@ -78,8 +79,33 @@
             return;
         if (!canMoveHere(row, column))
             return;
+
+
+                if (Math.Abs(activeChecker.Column - column) == 2)
+        {
+
+            int jumpedRow = Math.Abs((activeChecker.Row + row) / 2);
+            int jumpedColumn = Math.Abs((activeChecker.Column + column) / 2);
+            var result = select(blackCheckers, (jumpedRow, jumpedColumn));
+            if (result != null)
+            {
+                blackCheckers.Remove(result);
+
+            }
+            else
+            {
+                result = select(whiteCheckers, (jumpedRow, jumpedColumn));
+                if (result != null)
+                    whiteCheckers.Remove(result);
+            }
+
+        }
+
+
         activeChecker.Column = column;
         activeChecker.Row = row;
+
+        
 
         if ((activeChecker.Row == 0 && activeChecker.Color == "white")
             || (activeChecker.Row == UtilFunctions.MAX_ROW - 1))
@@ -88,13 +114,16 @@
         }
 
 
+
+
         activeChecker = null;
         EvaulateCheckerPosition();
+        whiteTurn = !whiteTurn;
     }
 
     Func<List<Checker>, (int row, int column), Checker?> select = (checkers, coordinates) => checkers.SingleOrDefault(x => x.Column == coordinates.column && x.Row == coordinates.row);
 
-    void EvaulateSpot(int row, int column)
+    void EvaulateSpot(int row, int column, bool firstTime = true)
     {
         var blackChecker = select(blackCheckers, (row, column));
         var whiteChecker = select(whiteCheckers, (row, column));
@@ -103,8 +132,33 @@
         {
             cellsPossible.Add((row, column));
         }
+        else if (firstTime)
+        {
+            //Can the cell be jumped
+            if ((whiteTurn && blackChecker != null)
+            || (!whiteTurn && whiteChecker != null))
+            {
+                int columnDifference = column - activeChecker.Column;
+                int rowDifference = row - activeChecker.Row;
+
+
+
+                EvaulateSpot(row + rowDifference, column + columnDifference, false);
+
+            }
+        }
     }
 
+    void CheckerClicked(Checker checker)
+    {
+        if (whiteTurn && checker.Color == "black"
+            ||
+            !whiteTurn && checker.Color == "white")
+            return;
+
+        activeChecker = checker;
+        EvaulateCheckerPosition();
+    }
 }
 
 @for (int i = 0; i < UtilFunctions.MAX_ROW; i++)
@@ -124,7 +178,7 @@
          class="cell @(canMoveHere(localI, localJ) ? "active" : "")">
                 @if (checker is not null)
                 {
-                    <div @onclick="()=> { activeChecker =checker; EvaulateCheckerPosition();}"
+                    <div @onclick="() => CheckerClicked(checker)"
              class="checker @checker.Color @(checker == activeChecker ? "active" : "")">
                         <span>@(checker.Direction == CheckerDirection.Both ? "K" : "")</span>
                     </div>
