@@ -1,9 +1,18 @@
 ﻿@using Checker.Client.Data
+@using Microsoft.AspNetCore.SignalR.Client;
 
 
 <h3>Checkerboard</h3>
 
 @code {
+
+    [Parameter]
+    public HubConnection hubConnection { get; set; }
+    [Parameter]
+    public string TableId { get; set; }    
+    [Parameter]
+    public bool IsWhitePlayer { get; set; }
+
     List<Checker> blackCheckers = new List<Checker>();
     List<Checker> whiteCheckers = new List<Checker>();
     Checker? activeChecker = null;
@@ -40,6 +49,13 @@
             }
         }
 
+
+        hubConnection.On("TableJoined", () =>
+        {
+            Console.WriteLine("Someone joined our table");
+        });
+
+        hubConnection.On<int, int, int, int>("Move", ServerMove);
     }
     bool whiteTurn = true;
 
@@ -71,6 +87,20 @@
         }
     }
 
+    void ServerMove(int previousRow, int previousCol, int newRow, int newCol)
+    {
+        var checker = select(blackCheckers, (previousRow, previousCol));
+
+        if (checker is null)
+        {
+            checker = select(whiteCheckers, (previousRow, previousCol));
+        }
+        activeChecker = checker;
+        EvaulateCheckerPosition();
+        MoveChecker(newRow, newCol);
+
+    }
+
     bool canMoveHere(int row, int column) => cellsPossible.Contains((row, column));
 
     void MoveChecker(int row, int column)
@@ -80,8 +110,7 @@
         if (!canMoveHere(row, column))
             return;
 
-
-                if (Math.Abs(activeChecker.Column - column) == 2)
+        if (Math.Abs(activeChecker.Column - column) == 2)
         {
 
             int jumpedRow = Math.Abs((activeChecker.Row + row) / 2);
@@ -98,14 +127,11 @@
                 if (result != null)
                     whiteCheckers.Remove(result);
             }
-
         }
-
-
+        hubConnection.SendAsync("Move", TableId, activeChecker.Column, activeChecker.Row, column, row);
+        //Move checker
         activeChecker.Column = column;
         activeChecker.Row = row;
-
-        
 
         if ((activeChecker.Row == 0 && activeChecker.Color == "white")
             || (activeChecker.Row == UtilFunctions.MAX_ROW - 1))
@@ -113,12 +139,11 @@
             activeChecker.Direction = CheckerDirection.Both;
         }
 
-
-
-
         activeChecker = null;
         EvaulateCheckerPosition();
         whiteTurn = !whiteTurn;
+
+        StateHasChanged();
     }
 
     Func<List<Checker>, (int row, int column), Checker?> select = (checkers, coordinates) => checkers.SingleOrDefault(x => x.Column == coordinates.column && x.Row == coordinates.row);
@@ -151,6 +176,9 @@
 
     void CheckerClicked(Checker checker)
     {
+        if (whiteTurn != IsWhitePlayer)
+            return;
+
         if (whiteTurn && checker.Color == "black"
             ||
             !whiteTurn && checker.Color == "white")

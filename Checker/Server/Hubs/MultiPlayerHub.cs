@@ -33,5 +33,11 @@ public class MultiPlayerHub : Hub
 
 
     }
+    public async Task Move(string tableId, int previousColumn, int previousRow, int newCol, int newRow)
+    {
+        await Clients
+            .GroupExcept(tableId, Context.ConnectionId)
+            .SendAsync("Move",  previousRow, previousColumn, newRow, newCol);
+    }
 
 }

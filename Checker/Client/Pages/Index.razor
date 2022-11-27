@@ -7,7 +7,7 @@
 
     bool inGame = false;
     HubConnection hubConnection;
-
+    string tableId;
     protected override void OnInitialized()
     {
 
@@ -36,22 +36,27 @@
     async Task CreateGame()
     {
         await hubConnection.StartAsync();
-        string tableId = Guid.NewGuid().ToString();
+        this.tableId = Guid.NewGuid().ToString();
         await hubConnection.SendAsync("JoinTable", tableId);
         inGame = true;
     }
 
     async Task JoinGame(string tableId)
     {
+        isWhitePlayer = false;
+        this.tableId = tableId;
         await hubConnection.StartAsync();
         await hubConnection.SendAsync("JoinTable", tableId);
         inGame = true;
+
     }
+    bool isWhitePlayer = true;
+
 }
 
 @if (inGame)
 {
-    <Checkerboard />
+    <Checkerboard hubConnection="hubConnection" TableId="@tableId" IsWhitePlayer="@isWhitePlayer"/>
 }
 else
 {
