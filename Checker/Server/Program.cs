@@ -1,4 +1,5 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using Checker.Server.Data;
+using Checker.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,8 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR(x => { x.EnableDetailedErrors = true; });
+builder.Services.AddSingleton<TableManager>();
 
 var app = builder.Build();
+//app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -31,6 +35,12 @@ app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
+
+
+//app.MapBlazorHub();
+app.MapHub<MultiPlayerHub>("/connect");
+//app.MapFallbackToPage("/_Host");
+
 app.MapFallbackToFile("index.html");
 
 app.Run();

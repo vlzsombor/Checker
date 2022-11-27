@@ -1,3 +1,65 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client;
+@inject NavigationManager Navigation
 
-<Checkerboard />
+@code {
+    const string SERVER_URL = "https://localhost:7009";
+
+    bool inGame = false;
+    HubConnection hubConnection;
+
+    protected override void OnInitialized()
+    {
+
+        base.OnInitialized();
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(SERVER_URL+"/connect")
+            .Build();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        await RefreshTable();
+
+        await base.OnInitializedAsync();
+    }
+
+    List<string> tables = new();
+    async Task RefreshTable()
+    {
+        HttpClient httpClient = new();
+        tables = await httpClient.GetFromJsonAsync<List<string>>(SERVER_URL + "/Api/GetTables");
+    }
+
+    async Task CreateGame()
+    {
+        await hubConnection.StartAsync();
+        string tableId = Guid.NewGuid().ToString();
+        await hubConnection.SendAsync("JoinTable", tableId);
+        inGame = true;
+    }
+
+    async Task JoinGame(string tableId)
+    {
+        await hubConnection.StartAsync();
+        await hubConnection.SendAsync("JoinTable", tableId);
+        inGame = true;
+    }
+}
+
+@if (inGame)
+{
+    <Checkerboard />
+}
+else
+{
+    <button @onclick="CreateGame">Create Game</button>
+
+    @foreach(string table in tables)
+    {
+        <button @onclick="()=> JoinGame(table)">Join Table @table</button>
+    }
+
+}
