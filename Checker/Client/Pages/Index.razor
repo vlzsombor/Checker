@@ -1,26 +1,20 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client;
-@inject NavigationManager Navigation
+@inject NavigationManager NavigationManager
 
 @code {
-    const string SERVER_URL = "https://localhost:7009";
+    string SERVER_URL;
 
     bool inGame = false;
     HubConnection hubConnection;
     string tableId;
-    protected override void OnInitialized()
-    {
-
-        base.OnInitialized();
-
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(SERVER_URL+"/connect")
-            .Build();
-    }
 
     protected override async Task OnInitializedAsync()
     {
-
+        SERVER_URL = NavigationManager.BaseUri;
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(SERVER_URL + "connect")
+            .Build();
         await RefreshTable();
 
         await base.OnInitializedAsync();
@@ -30,7 +24,7 @@
     async Task RefreshTable()
     {
         HttpClient httpClient = new();
-        tables = await httpClient.GetFromJsonAsync<List<string>>(SERVER_URL + "/Api/GetTables");
+        tables = await httpClient.GetFromJsonAsync<List<string>>(SERVER_URL + "Api/GetTables");
     }
 
     async Task CreateGame()
@@ -53,6 +47,7 @@
     bool isWhitePlayer = true;
 
 }
+<p>@SERVER_URL</p>
 
 @if (inGame)
 {
