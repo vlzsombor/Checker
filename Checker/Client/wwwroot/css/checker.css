@@ -1,16 +1,16 @@
 ﻿body {
 }
 
-.cell {
+/*.cell {
     height: 80px;
     width: 80px;
     padding: 10px;
     border: 1px solid black;
-}
+}*/
 
-.cell.active {
-    border: 3px solid blue;
-}
+    .cell.active {
+        border: 3px solid blue;
+    }
 
 .row:nth-child(2n) .cell:nth-child(2n+1) {
     background: tan;
@@ -36,20 +36,80 @@
     border: 1px solid black;
 }
 
-.checker span{
-    text-align: center;
-    margin-top: 10px;
-    display: block;
+    .checker span {
+        text-align: center;
+        margin-top: 10px;
+        display: block;
+    }
+
+    .checker.black {
+        background: #000;
+        color: #fff;
+    }
+
+    .checker.white {
+        background: #fff;
+    }
+
+    .checker.active {
+        border: 2px solid blue;
+    }
+
+
+/*#fixedheight {
+    table-layout: fixed;
 }
 
-.checker.black{
-    background: #000;
-    color: #fff;
-}
-.checker.white{
-    background: #fff;
+#fixedheight td {
+    width: 10%;
+    height: 10%;
 }
 
-.checker.active{
-     border: 2px solid blue;
+#fixedheight td div {
+    height: 200px;
+    overflow: hidden;
+}*/
+
+
+/*table {
+    width: 100%;
+}*/
+
+/*td {
+    width: 50%;
+    height: 50%;
 }
+*/
+
+/*
+.col-md-3 {
+    width: 25%;
+    padding: 25%;
+}
+*/
+
+
+
+table {
+    width: 90%;
+}
+
+td {
+    width: 33.33%;
+    position: relative;
+}
+
+    td:after {
+        content: '';
+        display: block;
+        margin-top: 100%;
+    }
+
+    td .content {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: gold;
+    }
