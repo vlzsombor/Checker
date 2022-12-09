@@ -1,42 +1,42 @@
 ﻿
 
 /*.cell {
-    height: 80px;
-    width: 80px;
     padding: 10px;
     border: 1px solid black;
 }
 */
+
+
 .cell.active {
     border: 3px solid blue;
 }
 
-.row:nth-child(2n) .cell:nth-child(2n+1) {
+tr:nth-child(2n) td:nth-child(2n+1) {
     background: tan;
 }
 
-.row:nth-child(2n) .cell:nth-child(2n) {
+tr:nth-child(2n) td:nth-child(2n) {
     background: #eee;
 }
 
-.row:nth-child(2n+1) .cell:nth-child(2n+1) {
+tr:nth-child(2n+1) td:nth-child(2n+1) {
     background: #eee;
 }
 
-.row:nth-child(2n+1) .cell:nth-child(2n) {
+tr:nth-child(2n+1) td:nth-child(2n) {
     background: tan;
 }
 
 
 .checker {
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     border: 1px solid black;
 }
 
 .checker span {
-    text-align: center;
+    /*text-align: center;*/
     /*margin-top: 10px;*/
-    display: block;
+    /*display: block;*/
 }
 
 .checker.black {
@@ -52,6 +52,7 @@
     border: 2px solid blue;
 }
 
+
 /*table {
     width: 90%;
 }*/
@@ -60,11 +61,12 @@ td {
     width: 12.5%;
     height: 12.5%;
     position: relative;
+    align-content: center;
 }
 
 td:after {
     content: '';
-    display: block;
+    display: table;
     margin-top: 100%;
 }
 
@@ -74,5 +76,4 @@ td .content {
     bottom: 0;
     left: 0;
     right: 0;
-    background: pink;
 }

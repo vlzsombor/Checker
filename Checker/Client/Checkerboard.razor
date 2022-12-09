@@ -189,7 +189,7 @@
     }
 }
 
-@for (int i = 0; i < UtilFunctions.MAX_ROW; i++)
+@*@for (int i = 0; i < UtilFunctions.MAX_ROW; i++)
 {
     int localI = i;
 
@@ -214,92 +214,39 @@
             </div>
         }
     </div>
-}
+}*@
+
 <div class="container">
     <div class="row">
         <div class="col-sm-center-6">
             <table class="table table-bordered">
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-                <tr>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                    <td><div class="content">1</div></td>
-                </tr>
-
+                @for (int i = 0; i < UtilFunctions.MAX_ROW; i++)
+                {
+                    int localI = i;
+                    <tr>
+                        @for (int j = 0; j < UtilFunctions.MAX_ROW; j++)
+                        {
+                            int localJ = j;
+                            var checker = select(blackCheckers, (i, j));
+                            if (checker is null)
+                            {
+                                checker = select(whiteCheckers, (i, j));
+                            }
+                            <td>
+                                    <div @onclick="()=> MoveChecker(localI,localJ)"
+                                 class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
+                                        @if (checker is not null)
+                                    {
+                                            <div @onclick="() => CheckerClicked(checker)"
+                                 class="rounded-circle @(checker == activeChecker ? "active" : "" )">
+                                            <span style="position: absolute; top:50%" class="align-bottom">@(checker.Direction == CheckerDirection.Both ? "K" : "")xd</span>
+                                            </div>
+                                        }
+                                    </div>
+                            </td>
+                        }
+                    </tr>
+                }
             </table>
         </div>
     </div>
