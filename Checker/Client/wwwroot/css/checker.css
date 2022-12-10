@@ -50,11 +50,6 @@ tr:nth-child(2n+1) td:nth-child(2n) {
     border: 5px solid blue;
 }
 
-
-/*table {
-    width: 90%;
-}*/
-
 td {
     width: 12.5%;
     height: 12.5%;
