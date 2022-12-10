@@ -189,36 +189,9 @@
     }
 }
 
-@*@for (int i = 0; i < UtilFunctions.MAX_ROW; i++)
-{
-    int localI = i;
-
-    <div class="row">
-        @for (int j = 0; j < UtilFunctions.MAX_ROW; j++)
-        {
-            int localJ = j;
-            var checker = select(blackCheckers, (i, j));
-            if (checker is null)
-            {
-                checker = select(whiteCheckers, (i, j));
-            }
-            <div @onclick="()=> MoveChecker(localI,localJ)"
-         class="cell @(canMoveHere(localI, localJ) ? "active" : "")">
-                @if (checker is not null)
-                {
-                    <div @onclick="() => CheckerClicked(checker)"
-             class="checker @checker.Color @(checker == activeChecker ? "active" : "")">
-                        <span>@(checker.Direction == CheckerDirection.Both ? "K" : "")</span>
-                    </div>
-                }
-            </div>
-        }
-    </div>
-}*@
-
 <div class="container">
-    <div class="row">
-        <div class="col-sm-center-6">
+    <div class="row justify-content-center">
+        <div class="col-sm-7 d-flex">
             <table class="table table-bordered">
                 @for (int i = 0; i < UtilFunctions.MAX_ROW; i++)
                 {
@@ -237,10 +210,10 @@
                              class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
                                     @if (checker is not null)
                                     {
-                                        <div @onclick="() => CheckerClicked(checker)"
-                                 class="rounded-circle @(checker == activeChecker ? "active" : "" )">
+                                        <div @onclick="() => CheckerClicked(checker)" 
+                                            class="rounded-circle checker @(checker == activeChecker ? "active" : "" )">
 
-                                            <div class="ratio ratio-1x1 rounded-circle overflow-hidden checker @checker.Color">
+                                            <div class="ratio ratio-1x1 rounded-circle overflow-hidden checker                   @checker.Color">
 
                                                 <span style="position: absolute; top:50%" class="align-bottom">@(checker.Direction == CheckerDirection.Both ? "K" : "")xd</span>
                                             </div>

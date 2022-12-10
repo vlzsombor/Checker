@@ -5,9 +5,7 @@
     border: 1px solid black;
 }
 */
-
-
-.cell.active {
+.content.active {
     border: 3px solid blue;
 }
 
@@ -49,7 +47,7 @@ tr:nth-child(2n+1) td:nth-child(2n) {
 }
 
 .checker.active {
-    border: 2px solid blue;
+    border: 5px solid blue;
 }
 
 
