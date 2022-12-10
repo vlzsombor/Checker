@@ -233,16 +233,20 @@
                                 checker = select(whiteCheckers, (i, j));
                             }
                             <td>
-                                    <div @onclick="()=> MoveChecker(localI,localJ)"
-                                 class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
-                                        @if (checker is not null)
+                                <div @onclick="()=> MoveChecker(localI,localJ)"
+                             class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
+                                    @if (checker is not null)
                                     {
-                                            <div @onclick="() => CheckerClicked(checker)"
+                                        <div @onclick="() => CheckerClicked(checker)"
                                  class="rounded-circle @(checker == activeChecker ? "active" : "" )">
-                                            <span style="position: absolute; top:50%" class="align-bottom">@(checker.Direction == CheckerDirection.Both ? "K" : "")xd</span>
+
+                                            <div class="ratio ratio-1x1 rounded-circle overflow-hidden checker @checker.Color">
+
+                                                <span style="position: absolute; top:50%" class="align-bottom">@(checker.Direction == CheckerDirection.Both ? "K" : "")xd</span>
                                             </div>
-                                        }
-                                    </div>
+                                        </div>
+                                    }
+                                </div>
                             </td>
                         }
                     </tr>

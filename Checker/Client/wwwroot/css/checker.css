@@ -77,3 +77,33 @@ td .content {
     left: 0;
     right: 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.img-cover {
+    object-fit: cover;
+    object-position: center;
+}
