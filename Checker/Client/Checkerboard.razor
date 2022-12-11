@@ -6,8 +6,8 @@
 
 @code {
 
-    [Parameter]
-    public HubConnection hubConnection { get; set; }
+    [Parameter, EditorRequired]
+    public HubConnection? hubConnection { get; set; }
     [Parameter]
     public string TableId { get; set; }
     [Parameter]
@@ -50,12 +50,12 @@
         }
 
 
-        hubConnection.On("TableJoined", () =>
+        hubConnection?.On("TableJoined", () =>
         {
             Console.WriteLine("Someone joined our table");
         });
 
-        hubConnection.On<int, int, int, int>("Move", ServerMove);
+        hubConnection?.On<int, int, int, int>("Move", ServerMove);
     }
     bool whiteTurn = true;
 
@@ -128,7 +128,8 @@
                     whiteCheckers.Remove(result);
             }
         }
-        hubConnection.SendAsync("Move", TableId, activeChecker.Column, activeChecker.Row, column, row);
+
+        hubConnection?.SendAsync("Move", TableId, activeChecker.Column, activeChecker.Row, column, row);
         //Move checker
         activeChecker.Column = column;
         activeChecker.Row = row;
@@ -206,14 +207,13 @@
                                 checker = select(whiteCheckers, (i, j));
                             }
                             <td>
-                                <div @onclick="()=> MoveChecker(localI,localJ)"
-                             class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
+                                <div id="checkerCell" @onclick="()=> MoveChecker(localI,localJ)" class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
                                     @if (checker is not null)
                                     {
-                                        <div @onclick="() => CheckerClicked(checker)" 
+                                        <div  @onclick="() => CheckerClicked(checker)" 
                                             class="rounded-circle checker @(checker == activeChecker ? "active" : "" )">
 
-                                            <div class="ratio ratio-1x1 rounded-circle overflow-hidden checker                   @checker.Color">
+                                            <div class="ratio ratio-1x1 rounded-circle overflow-hidden checker @checker.Color">
 
                                                 <span style="position: absolute; top:50%" class="align-bottom">@(checker.Direction == CheckerDirection.Both ? "K" : "")</span>
                                             </div>
