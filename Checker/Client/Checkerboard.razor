@@ -12,6 +12,7 @@
     public string TableId { get; set; }
     [Parameter]
     public bool IsWhitePlayer { get; set; }
+    public int a = 32;
 
     List<Checker> blackCheckers = new List<Checker>();
     List<Checker> whiteCheckers = new List<Checker>();
@@ -190,6 +191,12 @@
     }
 }
 
+<div id="testid">
+    <button @onclick="()=>a++">alma</button>
+    @a
+</div>
+
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-sm-7 d-flex">
@@ -207,11 +214,11 @@
                                 checker = select(whiteCheckers, (i, j));
                             }
                             <td>
-                                <div id="checkerCell" @onclick="()=> MoveChecker(localI,localJ)" class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
+                                <div id="@($"cellId{i}-{j}")" @onclick="()=> MoveChecker(localI,localJ)" class="content text-center @(canMoveHere(localI, localJ) ? "active" : "")">
                                     @if (checker is not null)
                                     {
-                                        <div  @onclick="() => CheckerClicked(checker)" 
-                                            class="rounded-circle checker @(checker == activeChecker ? "active" : "" )">
+                                        <div id="cellWithChecker" @onclick="() => CheckerClicked(checker)"
+                                 class="rounded-circle checker @(checker == activeChecker ? "active" : "" )">
 
                                             <div class="ratio ratio-1x1 rounded-circle overflow-hidden checker @checker.Color">
 

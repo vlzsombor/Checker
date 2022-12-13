@@ -3,6 +3,7 @@ using AngleSharp.Dom;
 using Checker.Client;
 using Microsoft.AspNetCore.SignalR.Client;
 using Moq;
+using System;
 using System.Linq;
 
 namespace BlazorTest;
@@ -21,33 +22,72 @@ public class CheckerTest : TestContext
         Assert.Equal(8, tr.Count);
         Assert.Equal(8 * 8, td.Count);
     }
-    //[Fact]
-    //public void TableCellColorCheck()
-    //{
-    //    // Arrange
-    //    var cut = RenderComponent<Checkerboard>();
 
-    //    var tds = cut.FindAll("tr:nth-child(2n) td:nth-child(2n+1)");
+    /// <summary>
+    /// Checker: circle round shape.
+    /// </summary>
+    [Fact]
+    public void TableCellColorCheck()
+    {
+        // Arrange
+        var cut = RenderComponent<Checkerboard>();
 
-    //    foreach (var td in tds)
-    //    {
+        var cellsWithChecker = cut.FindAll("#cellWithChecker");
 
-    //        var dfads = td.CreateStyleSheets();
+        var whites = cellsWithChecker.Take(12);
 
-    //        var a = td.ComputeCurrentStyle();
+        Assert.All(whites, c => Assert.True(c.Children.Single().ClassList.Contains("black")));
 
-    //        var b = td.GetStyle();
-    //        var c = td.GetStyleSheets();
+        var blacks = cellsWithChecker.TakeLast(12);
+        Assert.All(blacks, c => Assert.True(c.Children.Single().ClassList.Contains("white")));
+    }
+
+    /// <summary>
+    /// Checker: circle round shape.
+    /// </summary>
+    [Fact]
+    public void TableCellColorCheck2()
+    {
+        // Arrange
+        var cut = RenderComponent<Checkerboard>(p => p.Add(p => p.IsWhitePlayer, true));
 
 
-    //        //var xdf = ch2.First();
-    //        //var bo = ch.Any(x => x.ClassList.Any(x => x == "black"));
-    //        //var ch2 = td.ChildNodes.First().ChildNodes.First().ChildNodes;
 
-    //    }
+        cut.WaitForElement("#cellId5-0 #cellWithChecker", TimeSpan.FromSeconds(10));
+        cut.WaitForElement("#cellId4-1", TimeSpan.FromSeconds(10));
 
-    //    //var xd = b.First() as ;
-    //    Assert.Equal(8 * 8, tds.Count);
-    //}
+        var a = cut.Find("#cellId5-0 #cellWithChecker");
+        //var stepOpportunity = cut.Find("#41");
+        a.Click();
+        //blackChecker.Click();
+        //stepOpportunity.Click();
+
+        var op = cut.Find("#cellId4-1");
+        cut.Find("#cellId4-1").Click();
+        //cut.Render();
+
+        var b = cut.Find("#cellId4-1");
+        var xd = cut.Find("#cellId5-0");
+
+        //cut.Find("cellId{i}-{j}")
+
+    }
+
+
+    [Fact]
+    public void TableCellColorCheck3()
+    {
+        // Arrange
+        var cut = RenderComponent<Checkerboard>();
+
+        var a = cut.Find("#testid");
+        cut.Find("#testid button").Click();
+        cut.Find("#testid button").Click();
+        cut.Find("#testid button").Click();
+        //var stepOpportunity = cut.Find("#41");
+        var b = cut.Find("#testid");
+        //await cut.InvokeAsync(()=>cut.);
+
+    }
 
 }
