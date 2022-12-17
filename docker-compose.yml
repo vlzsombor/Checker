@@ -1,7 +1,8 @@
 version: '3.4'
+
 services:
   checker.server:
-    image: ${DOCKER_REGISTRY-}azymous/checkerserver
+    image: ${DOCKER_REGISTRY-}checker
     build:
       context: .
       dockerfile: Checker/Server/Dockerfile
