@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Checker.Client", "Checker\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Checker.Shared", "Checker\Shared\Checker.Shared.csproj", "{A063BCA4-F3AA-4040-8F2B-5D8A93BBD3ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTest", "BlazorTest\BlazorTest.csproj", "{FA7C79AC-75DC-48ED-93D7-6F4101E0AD49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorTest", "Checker\BlazorTest\BlazorTest.csproj", "{FA7C79AC-75DC-48ED-93D7-6F4101E0AD49}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{64F3CFF4-7AE6-47A2-B282-F1A08FF62D8B}"
 EndProject

@@ -32,9 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Checker\Client\Checker.Client.csproj" />
+	  <ProjectReference Include="..\Shared\Checker.Shared.csproj" />
+	  <ProjectReference Include="..\Client\Checker.Client.csproj" />
 	</ItemGroup>
-
-
-
 </Project>
