@@ -55,11 +55,11 @@
 }
 else
 {
-    <button @onclick="CreateGame">Create Game</button>
+    <button id="createGame" @onclick="CreateGame">Create Game</button>
 
     @foreach(string table in tables)
     {
-        <button @onclick="()=> JoinGame(table)">Join Table @table</button>
+        <button id="joinTable" @onclick="()=> JoinGame(table)">Join Table @table</button>
     }
 
 }
